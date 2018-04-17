@@ -1,0 +1,98 @@
+# #################################################
+# CENTRO UNIVERSITÁRIO METODISTA IZABELA HENDRIX #
+# PROGRAMAÇÃO FUNCIONAL E ORIENTADA A OBJETOS #
+# Projeto Integrador - Atividade 2 #
+# Aluno: Patrick Utsch #
+# #################################################
+
+# instalar os pacotes#
+install.packages("readr")
+install.packages("dplyr")
+install.packages("descr")
+
+#carregar os pacotes#
+library(readr)  
+library(dplyr) 
+library(descr)  
+
+enade14 <- read_csv2("https://raw.githubusercontent.com/neylsoncrepalde/introducao_ao_r/master/dados/enade_2014_amostra.csv")
+
+#########################################################################################################
+
+
+hist(enade14$nu_idade, 
+     main = "Histograma de distribuição de idades - ENADE 2014",
+     xlab = "Idades",
+     ylab = "Frequência")
+# NUMERO DE PESSOAS COM MAIS DE 60 ANOS E INSIGNIFICANTE#
+
+
+#########################################################################################################
+
+cor_raca <-  enade14$qe_i2
+cor_raca[cor_raca == "a"] <- "Brancos"
+cor_raca[cor_raca == "b"] <- "Negros"
+cor_raca[cor_raca == "c"] <- "Pardos"
+cor_raca[cor_raca == "d"] <- "Amarelos"
+cor_raca[cor_raca == "e"] <- "Indigenas"
+freq(cor_raca[!is.na(cor_raca)], 
+     main = "Cor/Ra?a")
+
+" OS BRANCOS SAO MAIS DE 50% das pessoas que fizeram a prova#
+
+#####################################################################################################"
+
+
+
+
+estado_civil <-  enade14$qe_i1
+estado_civil[estado_civil == "a"] <- solteiro
+estado_civil[estado_civil == "b"] <- casado
+estado_civil[estado_civil == "c"] <- NA
+estado_civil[estado_civil == "d"] <- NA
+estado_civil[estado_civil == "e"] <- NA
+freq(estado_civil[!is.na(estado_civil)], 
+     main = "Estado Civil")
+
+###################################################################################################
+
+summary(enade14$nt_ger)
+boxplot(enade14$nt_ger, 
+        main = "Boxplot da nota geral - Enade 2014", 
+        ylab = "Notas")
+# esse grafico e indicado pois mostra a varianca de acordo com o quadrante#
+
+##################################################################################################
+
+
+
+PUBLICA = ifelse(enade14$co_catad == 118 |
+                   enade14$co_catad == 121 |
+                   enade14$co_catad == 10004 |
+                   enade14$co_catad == 10005 |
+                   enade14$co_catad == 10006 |
+                   enade14$co_catad == 10007 |
+                   enade14$co_catad == 10008 |
+                   enade14$co_catad == 10009, 0, 1)
+
+PUBLICA[PUBLICA == "0"] <- "IES/Privada"
+PUBLICA[PUBLICA == "1"] <- "IES/Publica"
+
+freq(PUBLICA, 
+     main = "Proporção IES/Privada e IES/Publica")
+
+
+
+##############################################################################################
+
+freq(enade14$qe_i2,)
+
+
+enade14$renda_pub <- enade14$qe_i17 == "a"
+enade14$renda_priv <- enade14$qe_i17 == "b"
+
+freq (enade14$renda_pub)
+freq (enade14$renda_priv)
+
+t.test (enade14$renda_priv, enade14$renda_pub)
+
